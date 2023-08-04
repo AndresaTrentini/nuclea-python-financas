@@ -12,6 +12,7 @@ def main():
     while(validador):
         print("Seja bem vindo(a) ao sistema de gerenciamento de carteira de ações da Nuclea. Selecione uma das opções abaixo:")
         print("1 - Cadastrar cliente")
+        #Deve alterar o "Cadastrar cliente" por "Cliente"  e exibir submenu com as devidas opções do CRUD.
         print("2 - Cadastrar ação")
         print("3 - Realizar análise da carteira")
         print("4 - Imprimir relatório da carteira")
@@ -31,10 +32,12 @@ def main():
             }
             clientes.append(cliente)
             print(clientes)
+            #Corrigir o validador para evitar duplicidade do retorna_menu_principal
             validador = retorna_menu_principal()
 
         elif opcao == "2":
             pass
+            #Preencher a função da ordem.
         elif opcao == "3":
             pass
         elif opcao == "4":
@@ -48,3 +51,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -5,12 +5,11 @@ from main import main, clientes
 from utils.valida_cpf import gera_cpf
 
 
-class TestStringMethods(unittest.TestCase):
+class TestClientes(unittest.TestCase):
 
     def gerar_nome_fake(self):
         fake = Faker()
         return fake.name()
-
 
 
     def test_cliente(self):
@@ -32,3 +31,6 @@ class TestStringMethods(unittest.TestCase):
         }
 
         self.assertIn(cliente_esperado, clientes)
+
+
+# Criar teste para ordens. Deve validar se a criação da ação foi bem sucedida.
