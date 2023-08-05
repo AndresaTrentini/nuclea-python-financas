@@ -73,7 +73,7 @@ class BancoDeDados:
         }
 
         return parametros_conexao
-
+    
 
 # Realizar integração com a classe cliente.
 conexao = BancoDeDados()

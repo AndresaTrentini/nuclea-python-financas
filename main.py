@@ -11,9 +11,9 @@ def main():
     validador = True
     while(validador):
         print("Seja bem vindo(a) ao sistema de gerenciamento de carteira de ações da Nuclea. Selecione uma das opções abaixo:")
-        print("1 - Cadastrar cliente")
+        print("1 - cliente")
         #Deve alterar o "Cadastrar cliente" por "Cliente"  e exibir submenu com as devidas opções do CRUD.
-        print("2 - Cadastrar ação")
+        print("2 - Ordem")
         print("3 - Realizar análise da carteira")
         print("4 - Imprimir relatório da carteira")
         print("5 - Sair")
