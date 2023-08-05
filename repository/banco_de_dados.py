@@ -42,13 +42,13 @@ class BancoDeDados:
             cliente['cpf'],
             cliente['rg'],
             cliente['data_nascimento'],
-            cliente['cep']['CEP'],
+            cliente['cep']['Cep'],
             cliente['cep']['logradouro'],
             cliente['cep']['complemento'],
             cliente['cep']['bairro'],
             cliente['cep']['cidade'],
             cliente['cep']['estado'],
-            cliente['numero_casa']
+            cliente['numero_residencia']
         )
         self.cursor.execute(insert_query, values)
         self.connection.commit()
@@ -61,6 +61,45 @@ class BancoDeDados:
         for cliente in clientes:
             print(cliente)
         return clientes
+    def delete(self, cliente):
+        print("Deletando cliente no banco de dados")
+        delete_query = "DELETE * FROM CLIENTE where cpf = '" + cliente['cpf'] + "';"
+        self.cursor.execute(delete_query)
+        self.connection.commit()
+
+
+    def update(self, cliente):
+        print("Atualizando cliente no banco de dados: ")
+        update_query = """
+            UPDATE cliente 
+            SET nome = %s,
+                rg = %s,
+                data_nascimento = %s,
+                cep = %s,
+                logradouro = %s,
+                complemento = %s,
+                bairro = %s,
+                cidade = %s,
+                estado = %s,
+                numero_residencia = %s
+            WHERE cpf = %s;
+        """
+        values = (
+            cliente['nome'],
+            cliente['rg'],
+            cliente['data_nascimento'],
+            cliente['cep']['CEP'],
+            cliente['cep']['logradouro'],
+            cliente['cep']['complemento'],
+            cliente['cep']['bairro'],
+            cliente['cep']['cidade'],
+            cliente['cep']['estado'],
+            cliente['numero_residencia'],
+            cliente['cpf']
+        )
+        self.cursor.execute(update_query, values)
+        self.connection.commit()
+
 
     @staticmethod
     def retorna_parametros_conexao_banco_de_dados():
@@ -73,9 +112,8 @@ class BancoDeDados:
         }
 
         return parametros_conexao
-    
+
+
 
 # Realizar integração com a classe cliente.
 conexao = BancoDeDados()
-cliente = {"cpf": "914.566.460-95"}
-conexao.select(cliente)
