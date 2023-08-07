@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 def valida_data_nascimento():
 
     while True:
@@ -14,8 +15,8 @@ def valida_data_nascimento():
                 print("A data de nascimento não pode ser maior que a data atual.")
         except ValueError as e:
             print("Recebei um erro: ", e ,", porém estou utilizando tratamento de erros. Digite novamente a data de nascimento.")
-        finally:
-            print("Fluxo de validação encerrado.")
+
+
 if __name__ == "__main__":
     valida_data_nascimento()
 

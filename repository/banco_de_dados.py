@@ -2,24 +2,6 @@ import psycopg2
 import os
 
 
-# CLASSE:
-# FORMA DE BOLO, ESTEIRA DE PRODUÇÃO DE UM VEICULO;
-# ATRIBUTO/CARICTERISTICA;
-# CHASSI, COR, QUANTIDADE DE PORTAS, POTENCIA MOTOR, CAMBIO;
-# METODOS/FUNCOES:
-# ACOES, COMPORTAMENTO, 4X4, TURBO, ANDAR, ESTACIONAR, TROCAR DE MARCHA
-# __init__
-# Construcao do objeto
-# __del__
-# Delecao do objeto
-
-# java objeto = new Class();
-# python objeto = Class()
-
-# variavel = cliente
-# funcao = cliente()
-# classe = Cliente()
-
 class BancoDeDados:
 
     def __init__(self):
@@ -34,7 +16,7 @@ class BancoDeDados:
         print("Inserindo cliente no banco de dados: ")
         insert_query = """
                 INSERT INTO cliente (nome, cpf, rg, data_nascimento, cep, logradouro, complemento,
-	            bairro, cidade, estado, numero_residencia)
+    	        bairro, cidade, estado, numero_residencia)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
                 """
         values = (
@@ -42,64 +24,57 @@ class BancoDeDados:
             cliente['cpf'],
             cliente['rg'],
             cliente['data_nascimento'],
-            cliente['cep']['Cep'],
-            cliente['cep']['logradouro'],
-            cliente['cep']['complemento'],
-            cliente['cep']['bairro'],
-            cliente['cep']['cidade'],
-            cliente['cep']['estado'],
+            cliente['endereco']['CEP'],
+            cliente['endereco']['Logradouro'],
+            cliente['endereco']['Complemento'],
+            cliente['endereco']['Bairro'],
+            cliente['endereco']['Cidade'],
+            cliente['endereco']['Estado'],
             cliente['numero_residencia']
-        )
+            )
         self.cursor.execute(insert_query, values)
         self.connection.commit()
 
-    def select(self, cliente):
+    def select(self, cpf):
         print("Selecionando cliente no banco de dados: ")
-        select_query = "SELECT * FROM CLIENTE where cpf = '" + cliente['cpf'] + "';"
+        select_query = "SELECT * FROM CLIENTE where cpf = '" + cpf + "';"
         self.cursor.execute(select_query)
         clientes = self.cursor.fetchall()
         for cliente in clientes:
             print(cliente)
         return clientes
-    def delete(self, cliente):
+
+    def delete(self, cpf):
         print("Deletando cliente no banco de dados")
-        delete_query = "DELETE * FROM CLIENTE where cpf = '" + cliente['cpf'] + "';"
+        delete_query = "DELETE FROM CLIENTE where cpf = '" + cpf + "';"
         self.cursor.execute(delete_query)
         self.connection.commit()
 
-
-    def update(self, cliente):
+    def update(self, cpf, cliente_novo):
         print("Atualizando cliente no banco de dados: ")
         update_query = """
-            UPDATE cliente 
-            SET nome = %s,
-                rg = %s,
-                data_nascimento = %s,
-                cep = %s,
-                logradouro = %s,
-                complemento = %s,
-                bairro = %s,
-                cidade = %s,
-                estado = %s,
-                numero_residencia = %s
-            WHERE cpf = %s;
-        """
+                    UPDATE cliente
+                    SET nome = %s, cpf = %s, rg = %s, data_nascimento = %s,
+                        cep = %s, logradouro = %s, numero_residencia = %s, complemento = %s,
+                        bairro = %s, cidade = %s, estado = %s
+                    WHERE cpf = %s;
+                """
         values = (
-            cliente['nome'],
-            cliente['rg'],
-            cliente['data_nascimento'],
-            cliente['cep']['CEP'],
-            cliente['cep']['logradouro'],
-            cliente['cep']['complemento'],
-            cliente['cep']['bairro'],
-            cliente['cep']['cidade'],
-            cliente['cep']['estado'],
-            cliente['numero_residencia'],
-            cliente['cpf']
+            cliente_novo['nome'],
+            cliente_novo['cpf'],
+            cliente_novo['rg'],
+            cliente_novo['data_nascimento'],
+            cliente_novo['endereco']['CEP'],
+            cliente_novo['endereco']['Logradouro'],
+            cliente_novo['endereco']['Complemento'],
+            cliente_novo['endereco']['Bairro'],
+            cliente_novo['endereco']['Cidade'],
+            cliente_novo['endereco']['Estado'],
+            cliente_novo['numero_residencia'],
+            cpf
         )
         self.cursor.execute(update_query, values)
         self.connection.commit()
-
 
     @staticmethod
     def retorna_parametros_conexao_banco_de_dados():
@@ -112,7 +87,6 @@ class BancoDeDados:
         }
 
         return parametros_conexao
-
 
 
 # Realizar integração com a classe cliente.
