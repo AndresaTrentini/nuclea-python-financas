@@ -39,10 +39,12 @@ class BancoDeDados:
         print("Selecionando cliente no banco de dados: ")
         select_query = "SELECT * FROM CLIENTE where cpf = '" + cpf + "';"
         self.cursor.execute(select_query)
-        clientes = self.cursor.fetchall()
-        for cliente in clientes:
-            print(cliente)
-        return clientes
+        linha = self.cursor.fetchone()
+        if linha:
+            coluna = [dado[0]for dado in self.cursor.description]
+            select_chave_valores = (dict(zip(coluna, linha)))
+            print(linha)
+            return select_chave_valores
 
     def delete(self, cpf):
         print("Deletando cliente no banco de dados")
@@ -75,6 +77,38 @@ class BancoDeDados:
         )
         self.cursor.execute(update_query, values)
         self.connection.commit()
+
+    def insert_ordem_bdd(self, ordem):
+        print("Inserindo cliente no banco de dados: ")
+        insert_query = """
+                   INSERT INTO ordem (nome, ticket, valor_compra, quantidade_compra, data_compra, cliente_id)
+                   VALUES (%s, %s, %s, %s, %s, %s);
+                   """
+        values = (
+            ordem['nome'],
+            ordem['ticket'],
+            ordem['valor_compra'],
+            ordem['quantidade_compra'],
+            ordem['data_compra'],
+            ordem['cliente_id']
+        )
+        self.cursor.execute(insert_query, values)
+        self.connection.commit()
+
+    def select_ordem_bdd(self, cliente_id):
+        print("Buscando carteira no banco de dados")
+        select_query = f"SELECT * FROM ORDEM where cliente_id = {cliente_id}"
+        self.cursor.execute(select_query)
+        linhas = self.cursor.fetchall()
+        if linhas:
+            coluna = [dado[0] for dado in self.cursor.description]
+            resultado = []
+            for linha in linhas:
+                resultado_dicionario = dict(zip(coluna, linha))
+                resultado.append(resultado_dicionario)
+            return resultado
+
+
 
     @staticmethod
     def retorna_parametros_conexao_banco_de_dados():

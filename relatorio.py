@@ -1,5 +1,30 @@
 import yfinance as yf
 
+def obter_dados_carteira(carteira, nome_arquivo):
+    try:
+        lista = [dado["ticket"] for dado in carteira]
+
+        with open(nome_arquivo + '.txt', 'w') as arquivo:
+            for ticket in lista:
+                acao = yf.download(ticket + '.SA', progress=False)
+                if not acao.empty:
+                    acao_info = carteira[lista.index(ticket)]
+                    arquivo.write(f"Nome da Ação: {acao_info['nome']}\n")
+                    arquivo.write(f"Ticket: {acao_info['ticket']}\n")
+                    arquivo.write(f"Valor de compra:  {acao_info['valor_compra']} \n")
+                    arquivo.write(f"Quantidade: {acao_info['quantidade_compra']}\n")
+                    arquivo.write(f"Data da compra: {acao_info['data_compra']}\n")
+                    arquivo.write(str(acao.tail()))
+
+            arquivo.close()
+
+        print(f"Relatório exportado com sucesso para o arquivo '{nome_arquivo}'.")
+
+    except Exception as e:
+        print("Erro ao obter dados da ação. Verifique o código da ação e tente novamente.")
+        print(f"Detalhes do erro: {e}")
+
+
 def obter_dados_acao(ticker, nome_arquivo):
     try:
         # Obter os dados da ação usando o Yahoo Finance (B3)

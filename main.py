@@ -6,7 +6,8 @@ import models.ordem
 def main():
     validador = True
     while validador:
-        print("Seja bem vindo(a) ao sistema de gerenciamento de carteira de ações da Nuclea. Selecione uma das opções abaixo:")
+        print(
+            "Seja bem vindo(a) ao sistema de gerenciamento de carteira de ações da Nuclea. Selecione uma das opções abaixo:")
         print("1 - Cliente")
         print("2 - Ordem")
         print("3 - Realizar análise da carteira")
@@ -40,13 +41,27 @@ def main():
             else:
                 print("opcão inválida")
         elif opcao == "2":
-            ordem.cadastrar_ordem()
+            ordem.cadastro_ordem(cliente)
         elif opcao == "3":
-            menu_analise_carteira()
+            ordem.analise_carteira(cliente)
         elif opcao == "4":
-            ticker = input("Digite o codigo da ação na B3: ").upper().strip()
-            nome_arquivo = input("Digite o nome do arquivo de saída: ").strip()
-            obter_dados_acao(ticker, nome_arquivo)
+            print("Menu relatório carteira")
+            print("1 - Imprimir relatório carteira")
+            print("2 - Imprimir relatório ação")
+            print("3 - Retornar ao menu principal")
+
+            opcao = input("Digite a opção desejada: ")
+
+            if opcao == "1":
+                ordem.imprimir_relatorio_carteira(cliente)
+            elif opcao == "2":
+                ordem.imprime_relatorio()
+            elif opcao == "3":
+                validador = retorna_menu_principal()
+            else:
+                print("opção inválida")
+
+
         elif opcao == "5":
             print("Obrigado por utilizar o sistema de gerenciamento de carteira de ações da Nuclea. Até a próxima! ")
             validador = False
@@ -56,4 +71,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -57,23 +57,42 @@ class Cliente:
         cpf = input("Digite seu cpf :")
         cliente_encontrado = self.banco_de_dados.select(cpf)
         if cliente_encontrado is not None:
-            return cpf, self
+            print("Cliente encontrado.")
+            return cliente_encontrado
         else:
             print("Documento não encontrado")
 
     def alterar_cliente(self):
         cpf = input("Digite o CPF do cliente a ser atualizado: ")
-        print("Informe os dados do cliente: ")
-        cliente_novo = {
-            "nome": formata_texto(input("Nome: ")),
-            "cpf": valida_cpf(),
-            "rg": valida_rg(),
-            "data_nascimento": valida_data_nascimento(),
-            "endereco": valida_cep(),
-            "numero_residencia": input("Número casa: ")
-        }
-        self.banco_de_dados.update(cpf, cliente_novo)
+        cliente_encontrado = self.banco_de_dados.select(cpf)
+        if cliente_encontrado is not None:
+            print("Informe os dados do cliente: ")
+            cliente_alterado = {
+                "nome": formata_texto(input("Nome: ")),
+                "cpf": valida_cpf(),
+                "rg": valida_rg(),
+                "data_nascimento": valida_data_nascimento(),
+                "endereco": valida_cep(),
+                "numero_residencia": input("Número casa: ")
+            }
+            self.banco_de_dados.update(cpf, cliente_alterado)
+            print("Cliente atualizado com sucesso!")
+        else:
+            print("Cliente não encontrado")
+
 
     def deletar_cliente(self):
         cpf = input("Digite o CPF do cliente a ser deletado: ")
-        self.banco_de_dados.delete(cpf)
+        cliente_encontrado = self.banco_de_dados.select(cpf)
+        if cliente_encontrado is not None:
+            confirmacao = input("Tem certeza que deseja excluir esse cliente? (sim/nao) ")
+            if confirmacao in ["sim"]:
+                self.banco_de_dados.delete(cpf)
+                print("Cliente excluido com sucesso!")
+            elif confirmacao in ["nao", "não"]:
+                return True
+            else:
+                print("Opção inválida!")
+
+        else:
+            print("Documento não encontrado")
